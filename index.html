@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#02040c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070d1c'/%3E%3Cpath d='M32 10l4.6 14.4L51 29l-14.4 4.6L32 48l-4.6-14.4L13 29l14.4-4.6z' fill='%23ffd479'/%3E%3C/svg%3E">
+<title>词源星图 · Etymology Sky</title>
+<meta name="description" content="把英语词根学习变成一场星空探索：词根是恒星，派生词是词星，题型是黯淡的行星，答对点亮，点开进入原创语段。" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="intro-open">
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<div id="ui">
+  <header class="topbar">
+    <div class="brand" id="brand">
+      <span class="brand-mark">✦</span>
+      <span class="brand-text">
+        <strong>词源星图</strong>
+        <em>ETYMOLOGY SKY</em>
+      </span>
+    </div>
+    <div class="top-actions">
+      <div class="progress-card card" id="progressCard">
+        <div class="progress-ring" id="progressRing" style="--p:0">
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-text">
+          <b><span id="progressCount">0</span> <i>/</i> <span id="progressTotal">0</span></b>
+          <span>题型行星已点亮</span>
+        </div>
+      </div>
+      <button class="icon-btn" id="soundBtn" title="音效开关" aria-label="音效开关" aria-pressed="true">♪</button>
+      <button class="icon-btn" id="helpBtn" title="玩法与设置" aria-label="玩法与设置">?</button>
+    </div>
+  </header>
+
+  <aside class="info-card card" id="infoCard" aria-live="polite"></aside>
+
+  <div class="legend" id="legend">
+    <div class="legend-row"><span class="legend-dot root"></span>词根恒星</div>
+    <div class="legend-row"><span class="legend-dot word"></span>派生词星</div>
+    <div class="legend-row"><span class="legend-dot planet"></span>暗行星 · 题型</div>
+    <div class="legend-row"><span class="legend-dot lit"></span>已点亮</div>
+  </div>
+
+  <nav class="root-nav card" id="rootNav" aria-label="词根星座"></nav>
+
+  <div class="hint" id="hint">拖拽漫游 · 滚轮缩放 · 点击星辰进入星区</div>
+
+  <aside class="panel" id="panel" aria-hidden="true" aria-label="语段与题目">
+    <div class="panel-glow" id="panelGlow"></div>
+    <div class="panel-inner">
+      <header class="panel-head">
+        <div class="planet-tag"><span class="planet-tag-dot" id="pTypeDot"></span><span id="pType">词义辨识</span></div>
+      </header>
+
+      <div class="panel-word">
+        <div class="panel-word-line">
+          <h2 id="pWord">inspect</h2>
+          <span class="phonetic" id="pPhonetic">/ɪnˈspekt/</span>
+        </div>
+        <div class="word-forms" id="pForms"></div>
+      </div>
+
+      <div class="planet-progress" id="pDots"></div>
+
+      <section class="passage-card">
+        <div class="passage-scene" id="pScene">海关故事</div>
+        <p class="passage-en" id="pPassage"></p>
+        <button class="cn-toggle" id="pCnToggle" aria-expanded="false">显示中文翻译 <span>▾</span></button>
+        <p class="passage-cn" id="pCn" hidden></p>
+      </section>
+
+      <section class="quiz">
+        <h3 id="pQuestion"></h3>
+        <div class="options" id="pOptions"></div>
+        <div class="feedback" id="pFeedback" hidden></div>
+        <button class="primary-btn" id="pSubmit">提交答案</button>
+      </section>
+
+      <footer class="panel-foot" id="pFoot">语段为本站原创 · 点击行星可反复复习</footer>
+    </div>
+    <button class="icon-btn panel-close" id="panelClose" aria-label="关闭">×</button>
+  </aside>
+
+  <div class="intro" id="intro">
+    <div class="intro-inner">
+      <p class="eyebrow">2026 QODER 高校创造力大赛 · STUDYHACK</p>
+      <h1 class="intro-title"><span>✦</span> 词源星图</h1>
+      <p class="intro-en">ETYMOLOGY SKY</p>
+      <p class="intro-sub">每个单词，都是一颗有来历的星。<br>从词根出发连成星座，点亮黯淡的题型行星，再走进一段语段。</p>
+      <div class="intro-stats">
+        <div><b>6</b><span>词根星座</span></div>
+        <div><b>36</b><span>派 生 词 星</span></div>
+        <div><b>108</b><span>题 型 行 星</span></div>
+      </div>
+      <button class="primary-btn big" id="startBtn">进入星图 <span class="arrow">→</span></button>
+      <p class="intro-tip">无需登录 · 进度保存在本地 · 建议全屏体验</p>
+    </div>
+    <div class="intro-scan"></div>
+  </div>
+
+  <div class="modal" id="helpModal" hidden>
+    <div class="modal-card card" role="dialog" aria-modal="true" aria-label="玩法说明">
+      <header><h3>玩法 · 星图导航</h3><button class="icon-btn" id="helpClose" aria-label="关闭">×</button></header>
+      <div class="modal-body">
+        <ol class="howto">
+          <li><b>选一片星区</b>：点击底部词根，或直接点击天空中的亮星。</li>
+          <li><b>找到词星</b>：词根周围环绕着它的派生词，连线上的小字是前缀的方向。</li>
+          <li><b>点亮行星</b>：每颗词星有 3 颗黯淡的题型行星，点开读语段、答题，答对即点亮。</li>
+          <li><b>连成星座</b>：词星的三颗行星全部点亮后，词星变亮；整片星座点亮，恒星会爆发一次星辉。</li>
+        </ol>
+        <div class="shortcuts">
+          <span><kbd>拖拽</kbd> 漫游</span>
+          <span><kbd>滚轮</kbd> 缩放</span>
+          <span><kbd>1–6</kbd> 切换星区</span>
+          <span><kbd>Esc</kbd> 返回 / 关闭</span>
+          <span><kbd>双击空白</kbd> 星海总览</span>
+        </div>
+        <div class="modal-actions">
+          <button class="ghost-btn" id="resetBtn">重置学习进度</button>
+          <span class="modal-note">语段与题目均为原创，进度仅保存在本浏览器。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="tooltip" id="tooltip" hidden></div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/background.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/data.part1.js"></script>
+<script src="js/data.part2.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
